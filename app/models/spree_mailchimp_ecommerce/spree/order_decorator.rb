@@ -56,7 +56,7 @@ module SpreeMailchimpEcommerce
       end
 
       def delete_mailchimp_cart
-        ::SpreeMailchimpEcommerce::DeleteCartJob.perform_later(number)
+        ::SpreeMailchimpEcommerce::DeleteCartJob.perform_later(self)
       end
 
       def create_mailchimp_order

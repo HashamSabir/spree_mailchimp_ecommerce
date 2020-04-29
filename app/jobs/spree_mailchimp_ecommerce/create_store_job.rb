@@ -10,7 +10,7 @@ module SpreeMailchimpEcommerce
                                   domain: ::Rails.application.routes.url_helpers.spree_url,
                                   email_address: mailchimp_setting.mailchimp_store_email
                                 })
-      MailchimpSetting.last.update(state: 'created')
+      mailchimp_setting.update(state: 'created')
     end
   end
 end

@@ -5,7 +5,7 @@ module SpreeMailchimpEcommerce
     def perform(mailchimp_product)
       return unless mailchimp_product
 
-      gibbon_store.products.create(body: mailchimp_product)
+      gibbon_store(mailchimp_product["store_id"]).products.create(body: mailchimp_product)
     rescue Gibbon::MailChimpError => e
       Rails.logger.warn "[MAILCHIMP] Failed to create a product with ID = #{mailchimp_product['id']}. #{e}"
     end

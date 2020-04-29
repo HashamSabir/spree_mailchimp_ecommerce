@@ -18,15 +18,21 @@ module SpreeMailchimpEcommerce
       private
 
       def create_mailchimp_promotion
-        ::SpreeMailchimpEcommerce::CreatePromoJob.perform_later(mailchimp_promo_rule, mailchimp_promo_code)
+        mailchimp_promo_rule.each do |rule|
+          ::SpreeMailchimpEcommerce::CreatePromoJob.perform_later(rule, mailchimp_promo_code)
+        end
       end
 
       def update_mailchimp_promotion
-        ::SpreeMailchimpEcommerce::UpdatePromoJob.perform_later(mailchimp_promo_rule, mailchimp_promo_code)
+        mailchimp_promo_rule.each do |rule|
+          ::SpreeMailchimpEcommerce::UpdatePromoJob.perform_later(rule, mailchimp_promo_code)
+        end
       end
 
       def delete_mailchimp_promotion
-        ::SpreeMailchimpEcommerce::DeletePromoJob.perform_later(mailchimp_promo_rule, mailchimp_promo_code)
+        mailchimp_promo_rule.each do |rule|
+          ::SpreeMailchimpEcommerce::DeletePromoJob.perform_later(rule, mailchimp_promo_code)
+        end
       end
     end
   end

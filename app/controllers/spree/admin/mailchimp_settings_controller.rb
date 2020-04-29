@@ -36,7 +36,7 @@ module Spree
       def destroy
         @mailchimp_setting = MailchimpSetting.find(params[:id])
         ActiveRecord::Base.transaction do
-          ::SpreeMailchimpEcommerce::DeleteStoreJob.perform_now
+          ::SpreeMailchimpEcommerce::DeleteStoreJob.perform_now # pass store id
           @mailchimp_setting.destroy
         end
         redirect_to new_admin_mailchimp_setting_path

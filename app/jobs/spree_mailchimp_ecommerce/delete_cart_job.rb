@@ -2,8 +2,8 @@
 
 module SpreeMailchimpEcommerce
   class DeleteCartJob < ApplicationJob
-    def perform(order_number)
-      gibbon_store.carts(order_number).delete
+    def perform(order)
+      gibbon_store(order.store_id).carts(order.number).delete
     end
   end
 end

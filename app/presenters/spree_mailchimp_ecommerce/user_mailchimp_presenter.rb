@@ -15,6 +15,7 @@ module SpreeMailchimpEcommerce
         opt_in_status: false,
         first_name: firstname,
         last_name: lastname,
+        store_id: @user.store_id
       }.merge(address).as_json
     end
 

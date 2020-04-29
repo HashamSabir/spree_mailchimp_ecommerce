@@ -7,7 +7,9 @@ module SpreeMailchimpEcommerce
 
         MailchimpSetting.last.update(state: 'syncing')
         ::Spree::Product.find_each do |product|
-          ::SpreeMailchimpEcommerce::CreateProductJob.perform_now(product.mailchimp_product)
+          product.mailchimp_product.each do |pro|
+            ::SpreeMailchimpEcommerce::CreateProductJob.perform_now(pro)
+          end
         end
 
         ::Spree::User.where.not(email: nil).find_each do |user|

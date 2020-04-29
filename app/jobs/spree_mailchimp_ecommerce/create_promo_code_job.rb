@@ -5,7 +5,7 @@ module SpreeMailchimpEcommerce
     def perform(mailchimp_promo_rule, mailchimp_promo_code)
       return unless mailchimp_promo_code
 
-      gibbon_store.promo_rules(mailchimp_promo_rule["id"]).promo_codes.create(body: mailchimp_promo_code)
+      gibbon_store(mailchimp_promo_rule["store_id"]).promo_rules(mailchimp_promo_rule["id"]).promo_codes.create(body: mailchimp_promo_code)
     rescue Gibbon::MailChimpError => e
       Rails.logger.warn "[MAILCHIMP] Failed to create a promo code with ID = #{mailchimp_promo_code['id']}. #{e}"
     end

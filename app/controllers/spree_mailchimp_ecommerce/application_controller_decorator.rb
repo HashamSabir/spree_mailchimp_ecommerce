@@ -17,7 +17,7 @@ module SpreeMailchimpEcommerce
     end
 
     def mailchimp_store_id
-      @store_id = ::SpreeMailchimpEcommerce.configuration.mailchimp_store_id
+      @store_id = ::SpreeMailchimpEcommerce.configuration(nil).mailchimp_store_id
     end
   end
 end

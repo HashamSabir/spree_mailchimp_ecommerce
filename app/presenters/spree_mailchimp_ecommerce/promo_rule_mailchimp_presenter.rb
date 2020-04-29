@@ -12,18 +12,21 @@ module SpreeMailchimpEcommerce
     # so for allow create promo_rule always, not only for proper promotion
     # we send "dummy" values accepted by mailchimp
     def json
-      {
-        id: Digest::MD5.hexdigest(promotion.id.to_s),
-        title: promotion.name || "",
-        description: promotion.description || "",
-        starts_at: starts_at,
-        ends_at: ends_at,
-        amount: amount.to_f,
-        type: type || "fixed",
-        target: target || "total",
-        created_at_foreign: promotion.created_at.strftime("%Y%m%dT%H%M%S"),
-        updated_at_foreign: promotion.updated_at.strftime("%Y%m%dT%H%M%S")
-      }.as_json
+      promotion.orders.map(&:store_id).uniq.map do |store_id|
+        {
+          id: Digest::MD5.hexdigest(promotion.id.to_s),
+          title: promotion.name || "",
+          description: promotion.description || "",
+          starts_at: starts_at,
+          ends_at: ends_at,
+          amount: amount.to_f,
+          type: type || "fixed",
+          target: target || "total",
+          created_at_foreign: promotion.created_at.strftime("%Y%m%dT%H%M%S"),
+          updated_at_foreign: promotion.updated_at.strftime("%Y%m%dT%H%M%S"),
+          store_id: store_id
+        }.as_json
+      end
     end
 
     private

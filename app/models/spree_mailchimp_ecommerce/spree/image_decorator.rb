@@ -10,7 +10,10 @@ module SpreeMailchimpEcommerce
       private
 
       def update_mailchimp_product
-        ::SpreeMailchimpEcommerce::UpdateProductJob.perform_later(find_product.mailchimp_product)
+
+        find_product.mailchimp_product.each do |pro|
+          ::SpreeMailchimpEcommerce::UpdateProductJob.perform_later(pro)
+        end        
       end
 
       def find_product

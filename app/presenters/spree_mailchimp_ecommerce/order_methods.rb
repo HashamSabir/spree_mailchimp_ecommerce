@@ -8,7 +8,8 @@ module SpreeMailchimpEcommerce
         customer: user,
         currency_code: order.currency || order.store&.default_currency || ::Spree::Config[:currency],
         order_total: (order.total || 0).to_s,
-        lines: lines
+        lines: lines,
+        store_id: order.store_id
       }.as_json
     end
 

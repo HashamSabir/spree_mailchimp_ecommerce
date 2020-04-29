@@ -1,8 +1,8 @@
 module SpreeMailchimpEcommerce
   class DeleteStoreJob < ApplicationJob
-    def perform
+    def perform(spree_store_hash)
       begin
-        gibbon_store.delete
+        gibbon_store(spree_store_hash["store_id"]).delete
       rescue Gibbon::MailChimpError => e
         Rails.logger.warn "[MAILCHIMP] Failed to delete store. #{e}"
       end
