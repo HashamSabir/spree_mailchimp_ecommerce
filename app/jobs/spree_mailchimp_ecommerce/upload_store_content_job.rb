@@ -2,10 +2,10 @@ module SpreeMailchimpEcommerce
   class UploadStoreContentJob < ApplicationJob
     def perform(*_args)
       begin
-        gibbon_store.update(body: { is_syncing: true })
+        mailchimp_setting = _args[0]
+        gibbon_store(mailchimp_setting.store_id).update(body: { is_syncing: true })
 
-
-        MailchimpSetting.last.update(state: 'syncing')
+        mailchimp_setting.update(state: 'syncing')
         ::Spree::Product.find_each do |product|
           product.mailchimp_product.each do |pro|
             ::SpreeMailchimpEcommerce::CreateProductJob.perform_now(pro)
@@ -28,9 +28,9 @@ module SpreeMailchimpEcommerce
         Rails.logger.error("[MAILCHIMP] Error while syncing process: #{e}")
       end
     ensure
-      gibbon_store.update(body: { is_syncing: false })
+      gibbon_store(mailchimp_setting.store_id).update(body: { is_syncing: false })
 
-      MailchimpSetting.last.update(state: 'ready')
+      mailchimp_setting.update(state: 'ready')
     end
   end
 end
