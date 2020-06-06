@@ -37,14 +37,16 @@ module SpreeMailchimpEcommerce
       return {} unless promotions_list.any?
 
       promos = promotions_list.map do |p|
-        rule = PromoRuleMailchimpPresenter.new(p).json
-        {
-          code: p.code,
-          amount_discounted: rule['amount'],
-          type: rule['type']
-        }
+        rules = PromoRuleMailchimpPresenter.new(p).json
+        rules.map do |rule|
+          {
+            code: p.code,
+            amount_discounted: rule['amount'],
+            type: rule['type']
+          }
+        end
       end
-      { promos: promos }
+      { promos: promos.flatten }
     end
 
     def promotions_list
