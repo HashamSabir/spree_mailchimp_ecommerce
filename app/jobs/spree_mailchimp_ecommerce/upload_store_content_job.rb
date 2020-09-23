@@ -2,7 +2,7 @@ module SpreeMailchimpEcommerce
   class UploadStoreContentJob < ApplicationJob
     def perform(*_args)
       begin
-        mailchimp_setting = _args[0]
+        mailchimp_setting = (_args[0] || MailchimpSetting.where(store_id: nil).last)
         gibbon_store(mailchimp_setting.store_id).update(body: { is_syncing: true })
 
         mailchimp_setting.update(state: 'syncing')
