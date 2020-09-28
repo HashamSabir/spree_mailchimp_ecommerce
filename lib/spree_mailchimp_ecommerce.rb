@@ -27,8 +27,7 @@ module SpreeMailchimpEcommerce
     private
 
     def setting_model
-      return @store.mailchimp_setting if @store.present?
-      ::MailchimpSetting.where(store_id: nil).last
+      (@store&.mailchimp_setting || ::MailchimpSetting.where(store_id: nil).last)
     end
   end
 end

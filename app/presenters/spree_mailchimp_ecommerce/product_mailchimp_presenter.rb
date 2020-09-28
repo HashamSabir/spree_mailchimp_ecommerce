@@ -26,7 +26,7 @@ module SpreeMailchimpEcommerce
     private
 
     def variants
-      product.has_variants? ? product.variants.map(&:mailchimp_variant) : [product.master.mailchimp_variant]
+      product.has_variants? ? product.variants.map(&:mailchimp_variant).flatten : product.master.mailchimp_variant
     end
 
     def image_url
