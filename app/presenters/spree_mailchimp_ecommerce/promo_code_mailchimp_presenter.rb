@@ -5,8 +5,9 @@ module SpreeMailchimpEcommerce
     include Rails.application.routes.url_helpers
     attr_reader :promotion
 
-    def initialize(promotion)
+    def initialize(promotion, store_url)
       @promotion = promotion
+      @store_url = store_url
     end
 
     def json
@@ -23,7 +24,7 @@ module SpreeMailchimpEcommerce
     private
 
     def redemption_url
-      "#{Rails.application.routes.url_helpers.spree_url}#{promotion.path}"
+      "#{@store_url}/checkout"
     end
   end
 end

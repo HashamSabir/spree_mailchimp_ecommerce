@@ -11,27 +11,27 @@ module SpreeMailchimpEcommerce
         ::SpreeMailchimpEcommerce::PromoRuleMailchimpPresenter.new(self).json
       end
 
-      def mailchimp_promo_code
-        ::SpreeMailchimpEcommerce::PromoCodeMailchimpPresenter.new(self).json
+      def mailchimp_promo_code(store_url)
+        ::SpreeMailchimpEcommerce::PromoCodeMailchimpPresenter.new(self, store_url).json
       end
 
       private
 
       def create_mailchimp_promotion
         mailchimp_promo_rule.each do |rule|
-          ::SpreeMailchimpEcommerce::CreatePromoJob.perform_later(rule, mailchimp_promo_code)
+          ::SpreeMailchimpEcommerce::CreatePromoJob.perform_later(rule, mailchimp_promo_code(rule["store_url"]))
         end
       end
 
       def update_mailchimp_promotion
         mailchimp_promo_rule.each do |rule|
-          ::SpreeMailchimpEcommerce::UpdatePromoJob.perform_later(rule, mailchimp_promo_code)
+          ::SpreeMailchimpEcommerce::UpdatePromoJob.perform_later(rule, mailchimp_promo_code(rule["store_url"]))
         end
       end
 
       def delete_mailchimp_promotion
         mailchimp_promo_rule.each do |rule|
-          ::SpreeMailchimpEcommerce::DeletePromoJob.perform_later(rule, mailchimp_promo_code)
+          ::SpreeMailchimpEcommerce::DeletePromoJob.perform_later(rule, mailchimp_promo_code(rule["store_url"]))
         end
       end
     end

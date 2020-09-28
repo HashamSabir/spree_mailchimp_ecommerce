@@ -14,7 +14,7 @@ module SpreeMailchimpEcommerce
         product_id: ProductMailchimpPresenter.new(line.product).json[0]["id"],
         product_variant_id: Digest::MD5.hexdigest("#{line.variant.sku}#{line.variant.id}"),
         quantity: line.quantity || 0,
-        price: (line.price || 0).to_s
+        price: (line.price_values[:price] rescue "0")
       }
     end
   end

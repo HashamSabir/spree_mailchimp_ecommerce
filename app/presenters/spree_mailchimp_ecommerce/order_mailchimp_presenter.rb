@@ -15,12 +15,12 @@ module SpreeMailchimpEcommerce
       order_json.merge(campaign_id).merge(promotions).merge(
         {
           processed_at_foreign: order.completed_at.strftime("%Y%m%dT%H%M%S"),
-          discount_total: - order.promo_total || 0.0,
-          tax_total: order.additional_tax_total || 0.0,
-          shipping_total: order.shipment_total || 0.0,
+          discount_total: - order.price_values[:prices][:promo_total].to_f || 0.0,
+          tax_total: order.price_values[:prices][:additional_tax_total].to_f || 0.0,
+          shipping_total: order.price_values[:prices][:ship_total].to_f || 0.0,
           shipping_address: order_address(order.shipping_address),
           billing_address: order_address(order.billing_address),
-          order_url: ::Spree::Core::Engine.routes.url_helpers.order_url(order)
+          order_url: ::SpreeMailchimpEcommerce.configuration(order.store_id).cart_url
         }.as_json
       )
     end

@@ -12,7 +12,7 @@ module SpreeMailchimpEcommerce
     # so for allow create promo_rule always, not only for proper promotion
     # we send "dummy" values accepted by mailchimp
     def json
-      promotion.orders.map(&:store_id).uniq.map do |store_id|
+      promotion.orders.map(&:store).uniq.map do |store|
         {
           id: Digest::MD5.hexdigest(promotion.id.to_s),
           title: promotion.name || "",
@@ -24,7 +24,8 @@ module SpreeMailchimpEcommerce
           target: target || "total",
           created_at_foreign: promotion.created_at.strftime("%Y%m%dT%H%M%S"),
           updated_at_foreign: promotion.updated_at.strftime("%Y%m%dT%H%M%S"),
-          store_id: store_id
+          store_id: store.id,
+          store_url: domain_url(store)
         }.as_json
       end
     end
@@ -73,6 +74,11 @@ module SpreeMailchimpEcommerce
 
     def available?
       promotion.actions.count == 1
+    end
+
+    def domain_url(store)
+      return store.url if store.mailchimp_setting.present?
+      ENV['FRONT_END_APP_URL']
     end
   end
 end
