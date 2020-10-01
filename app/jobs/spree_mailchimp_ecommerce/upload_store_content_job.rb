@@ -21,8 +21,11 @@ module SpreeMailchimpEcommerce
         end
 
         ::Spree::Promotion.find_each do |promotion|
-          ::SpreeMailchimpEcommerce::CreatePromoRuleJob.perform_now(promotion.mailchimp_promo_rule)
-          ::SpreeMailchimpEcommerce::CreatePromoCodeJob.perform_now(promotion.mailchimp_promo_rule, promotion.mailchimp_promo_code)
+          promo_rule = promotion.mailchimp_promo_rule
+          ::SpreeMailchimpEcommerce::CreatePromoRuleJob.perform_now(promo_rule)
+          promo_rule.each do |rule|
+            ::SpreeMailchimpEcommerce::CreatePromoCodeJob.perform_now(rule, promotion.mailchimp_promo_code(rule["store_url"]))
+          end
         end
       rescue Gibbon::MailChimpError => e
         Rails.logger.error("[MAILCHIMP] Error while syncing process: #{e}")
