@@ -11,7 +11,7 @@ module SpreeMailchimpEcommerce
     end
 
     def json
-      order_json.merge(checkout_url: ::SpreeMailchimpEcommerce.configuration(order.store_id).cart_url)
+      order_json.merge(checkout_url: "#{order.store.domain_url}/cart")
     end
 
     private

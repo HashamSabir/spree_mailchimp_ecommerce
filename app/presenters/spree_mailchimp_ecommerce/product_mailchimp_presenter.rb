@@ -14,7 +14,7 @@ module SpreeMailchimpEcommerce
           id: Digest::MD5.hexdigest(product.id.to_s),
           title: product.name || "",
           description: product.description || "",
-          url: ("#{domain_url(store)}/#{product.slug}" || ""),
+          url: ("#{store.domain_url}/#{product.slug}" || ""),
           vendor: product.category&.name || "",
           image_url: image_url,
           variants: variants,
@@ -31,11 +31,6 @@ module SpreeMailchimpEcommerce
 
     def image_url
       product.mailchimp_image_url
-    end
-
-    def domain_url(store)
-      return store.url if store.mailchimp_setting.present?
-      ENV['FRONT_END_APP_URL']
     end
   end
 end

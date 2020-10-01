@@ -28,12 +28,18 @@ class MailchimpSetting < ActiveRecord::Base
   end
 
   def set_cart_url
-    self.cart_url = "#{ENV['FRONT_END_APP_URL']}/cart" unless multi_store
-    self.cart_url = "#{self.store.url}/cart" if multi_store
+    self.cart_url = "#{domain_url}/cart" unless multi_store
+    self.cart_url = "#{self.store.domain_url}/cart" if multi_store
   end
 
   def ensure_store_id
     return true unless multi_store
     errors.add(:base, "Store can not be blank") unless store_id.present?
+  end
+
+  def domain_url
+    url = ENV['FRONT_END_APP_URL']
+    return url unless url["http://"].nil? && url["https://"].nil?
+    "https://#{url}"
   end
 end

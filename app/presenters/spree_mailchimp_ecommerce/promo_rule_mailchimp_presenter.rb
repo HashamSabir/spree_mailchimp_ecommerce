@@ -25,7 +25,7 @@ module SpreeMailchimpEcommerce
           created_at_foreign: promotion.created_at.strftime("%Y%m%dT%H%M%S"),
           updated_at_foreign: promotion.updated_at.strftime("%Y%m%dT%H%M%S"),
           store_id: store.id,
-          store_url: domain_url(store)
+          store_url: store.domain_url
         }.as_json
       end
     end
@@ -74,11 +74,6 @@ module SpreeMailchimpEcommerce
 
     def available?
       promotion.actions.count == 1
-    end
-
-    def domain_url(store)
-      return store.url if store.mailchimp_setting.present?
-      ENV['FRONT_END_APP_URL']
     end
   end
 end

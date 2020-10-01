@@ -20,7 +20,7 @@ module SpreeMailchimpEcommerce
           shipping_total: order.price_values[:prices][:ship_total].to_f || 0.0,
           shipping_address: order_address(order.shipping_address),
           billing_address: order_address(order.billing_address),
-          order_url: ::SpreeMailchimpEcommerce.configuration(order.store_id).cart_url
+          order_url: "#{order.store.domain_url}/cart"
         }.as_json
       )
     end

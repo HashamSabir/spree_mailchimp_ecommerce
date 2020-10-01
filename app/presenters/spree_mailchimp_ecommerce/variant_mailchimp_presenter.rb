@@ -16,16 +16,9 @@ module SpreeMailchimpEcommerce
           sku: variant.sku || variant.id,
           inventory_quantity: variant.stock_items.sum(&:count_on_hand),
           price: (variant.price || 0).to_s,
-          url: ("#{domain_url(store)}/#{variant.slug}" || ""),
+          url: ("#{store.domain_url}/#{variant.slug}" || ""),
         }.as_json
       end
-    end
-
-    private
-
-    def domain_url(store)
-      return store.url if store.mailchimp_setting.present?
-      ENV['FRONT_END_APP_URL']
     end
   end
 end
