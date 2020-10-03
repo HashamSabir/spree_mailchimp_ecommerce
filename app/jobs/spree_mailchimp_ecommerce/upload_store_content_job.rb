@@ -22,9 +22,9 @@ module SpreeMailchimpEcommerce
 
         ::Spree::Promotion.find_each do |promotion|
           promo_rule = promotion.mailchimp_promo_rule
-          ::SpreeMailchimpEcommerce::CreatePromoRuleJob.perform_now(promo_rule)
+
           promo_rule.each do |rule|
-            ::SpreeMailchimpEcommerce::CreatePromoCodeJob.perform_now(rule, promotion.mailchimp_promo_code(rule["store_url"]))
+            ::SpreeMailchimpEcommerce::CreatePromoJob.perform_later(rule, promotion.mailchimp_promo_code(rule["store_url"]))
           end
         end
       rescue Gibbon::MailChimpError => e
