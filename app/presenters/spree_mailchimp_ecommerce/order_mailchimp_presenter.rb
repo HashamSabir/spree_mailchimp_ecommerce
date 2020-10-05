@@ -62,7 +62,7 @@ module SpreeMailchimpEcommerce
           first_name: order.bill_address&.firstname || "",
           last_name: order.bill_address&.last_name || "",
           email_address: order.email || "",
-          opt_in_status: false,
+          # opt_in_status: false,
           address: customer_address(order.shipping_address)
         }
       end
