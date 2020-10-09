@@ -11,7 +11,8 @@ module SpreeMailchimpEcommerce
 
       def update_mailchimp_product
         return true unless viewable_id.present? # no need to proceed
-        find_product.mailchimp_product.each do |pro|
+
+        find_product&.mailchimp_product&.each do |pro|
           ::SpreeMailchimpEcommerce::UpdateProductJob.perform_later(pro)
         end
       end

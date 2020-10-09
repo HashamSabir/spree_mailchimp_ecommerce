@@ -9,10 +9,11 @@ module SpreeMailchimpEcommerce
 
       def update_product
         return unless count_on_hand_previously_changed? || count_on_hand_changed?
+        return unless product&.mailchimp_product.present?
 
         product.mailchimp_product.each do |pro|
           ::SpreeMailchimpEcommerce::UpdateProductJob.perform_later(pro)
-        end        
+        end
       end
     end
   end
