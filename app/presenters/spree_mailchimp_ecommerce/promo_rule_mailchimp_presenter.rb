@@ -24,7 +24,7 @@ module SpreeMailchimpEcommerce
           target: target || "total",
           created_at_foreign: promotion.created_at.strftime("%Y%m%dT%H%M%S"),
           updated_at_foreign: promotion.updated_at.strftime("%Y%m%dT%H%M%S"),
-          store_id: store.id,
+          store_id: store.id.to_s,
           store_url: store.domain_url
         }.as_json
       end

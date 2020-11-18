@@ -17,8 +17,8 @@ module SpreeMailchimpEcommerce
           url: ("#{store.domain_url}/#{product.slug}" || ""),
           vendor: product.category&.name || "",
           image_url: image_url,
-          variants: variants,
-          store_id: store.id
+          variants: variants.select{ |variant| variant["store_id"].eql? store.id.to_s },
+          store_id: store.id.to_s
         }.as_json
       end
     end

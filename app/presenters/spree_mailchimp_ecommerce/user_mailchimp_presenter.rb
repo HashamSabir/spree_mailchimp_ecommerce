@@ -15,7 +15,7 @@ module SpreeMailchimpEcommerce
         opt_in_status: user.news_letter,
         first_name: firstname,
         last_name: lastname,
-        store_id: @user.try(:store_id)
+        store_id: @user.try(:store_id).to_s
       }.merge(address).as_json
     end
 

@@ -6,7 +6,7 @@ module SpreeMailchimpEcommerce
                                   id: mailchimp_setting.mailchimp_store_id,
                                   list_id: mailchimp_setting.mailchimp_list_id,
                                   name: mailchimp_setting.mailchimp_store_name,
-                                  currency_code: ::Spree::Store.default.default_currency || ::Spree::Config[:currency],
+                                  currency_code: mailchimp_setting.store&.default_currency || ::Spree::Config[:currency],
                                   domain: (mailchimp_setting.store&.domain_url || mailchimp_setting.domain_url),
                                   email_address: mailchimp_setting.mailchimp_store_email
                                 })
