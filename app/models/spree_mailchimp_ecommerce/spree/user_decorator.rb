@@ -4,6 +4,7 @@ module SpreeMailchimpEcommerce
       def self.prepended(base)
         base.after_create :create_mailchimp_user
         base.after_update :update_mailchimp_user
+        base.after_save :update_gdpr_permissions
       end
 
       def mailchimp_user
@@ -26,6 +27,13 @@ module SpreeMailchimpEcommerce
 
         ::SpreeMailchimpEcommerce::UpdateUserJob.perform_later(mailchimp_user)
       end
+
+      def update_gdpr_permissions
+        return true if previous_changes[:news_letter].blank?
+
+        ::SpreeMailchimpEcommerce::UpdateGdprPermissionsJob.perform_later(mailchimp_user)
+      end
+
     end
   end
 end

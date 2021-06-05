@@ -41,5 +41,13 @@ module SpreeMailchimpEcommerce
       ::Gibbon::Request.new(api_key: mailchimp_api_key(store_id)).
         ecommerce.stores(mailchimp_store_id(store_id))
     end
+
+    def list(store_id)
+      ::Gibbon::Request.new(api_key: mailchimp_api_key(store_id)).lists(mailchimp_list_id(store_id))
+    end
+
+    def member(store_id, user_id)
+      list(store_id).members(user_id)
+    end
   end
 end
