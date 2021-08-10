@@ -37,6 +37,10 @@ class MailchimpSetting < ActiveRecord::Base
     errors.add(:base, "Store can not be blank") unless store_id.present?
   end
 
+  def is_multi_store
+    (multi_store || store_id.present?)
+  end
+
   def domain_url
     url = ENV['FRONT_END_APP_URL']
     return url unless url["http://"].nil? && url["https://"].nil?
