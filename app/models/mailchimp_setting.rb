@@ -28,8 +28,11 @@ class MailchimpSetting < ActiveRecord::Base
   end
 
   def set_cart_url
-    self.cart_url = "#{domain_url}/cart" unless multi_store
-    self.cart_url = "#{self.store.domain_url}/cart" if multi_store
+    self.cart_url = if is_multi_store
+      "#{self.store.domain_url}/cart"
+    else
+      "#{domain_url}/cart"
+    end
   end
 
   def ensure_store_id
