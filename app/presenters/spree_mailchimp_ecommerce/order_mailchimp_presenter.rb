@@ -12,11 +12,17 @@ module SpreeMailchimpEcommerce
     end
 
     def json
+      tax_total = if order.respond_to?(:price_values)
+        order.tp(order.float_tp(order.price_values[:prices][:included_tax_total]) + order.float_tp(order.price_values[:prices][:additional_tax_total]))
+      else
+        order.tax_total
+      end
+
       order_json.merge(campaign_id).merge(promotions).merge(
         {
           processed_at_foreign: order.completed_at.strftime("%Y%m%dT%H%M%S"),
-          discount_total: - (order.respond_to?(:price_values) ? order.price_values[:prices][:promo_total] : order.promo_total),
-          tax_total: (order.respond_to?(:price_values) ? order.price_values[:prices][:tax_total] : order.tax_total),
+          discount_total: (order.respond_to?(:price_values) ? order.price_values[:prices][:promo_total] : order.promo_total),
+          tax_total: tax_total,
           shipping_total: (order.respond_to?(:price_values) ? order.price_values[:prices][:ship_total] : order.ship_total),
           shipping_address: order_address(order.shipping_address),
           billing_address: order_address(order.billing_address),
