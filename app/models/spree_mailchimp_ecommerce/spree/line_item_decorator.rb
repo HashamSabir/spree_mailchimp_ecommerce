@@ -2,9 +2,9 @@ module SpreeMailchimpEcommerce
   module Spree
     module LineItemDecorator
       def self.prepended(base)
-        base.after_update :update_mailchimp_cart
-        base.after_create :handle_cart
-        base.after_destroy :delete_line_item
+        base.after_update :update_mailchimp_cart, if: :mailchimp_setting_present?
+        base.after_create :handle_cart, if: :mailchimp_setting_present?
+        base.after_destroy :delete_line_item, if: :mailchimp_setting_present?
       end
 
       def handle_cart
@@ -25,6 +25,11 @@ module SpreeMailchimpEcommerce
 
       def delete_line_item
         ::SpreeMailchimpEcommerce::DeleteLineItemJob.perform_later(self)
+      end
+
+      def mailchimp_setting_present?
+        setting = self.store.mailchimp_setting || MailchimpSetting.find_by(store_id: nil)
+        setting.present?
       end
     end
   end
